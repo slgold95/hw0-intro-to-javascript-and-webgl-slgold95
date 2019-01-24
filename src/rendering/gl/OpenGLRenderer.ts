@@ -22,17 +22,17 @@ class OpenGLRenderer {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   }
 
-  render(camera: Camera, prog: ShaderProgram, drawables: Array<Drawable>) {
+  render(camera: Camera, prog: ShaderProgram, color: vec4, drawables: Array<Drawable>) {
     let model = mat4.create();
     let viewProj = mat4.create();
-    let color = vec4.fromValues(1, 0, 0, 1);
+    //let color = vec4.fromValues(1, 0, 0, 1); // removed this to pass in my own color
 
     mat4.identity(model);
     mat4.multiply(viewProj, camera.projectionMatrix, camera.viewMatrix);
     prog.setModelMatrix(model);
     prog.setViewProjMatrix(viewProj);
     prog.setGeometryColor(color);
-
+    
     for (let drawable of drawables) {
       prog.draw(drawable);
     }

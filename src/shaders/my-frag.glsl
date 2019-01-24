@@ -13,6 +13,8 @@ precision highp float;
 
 uniform vec4 u_Color; // The color with which to render this instance of geometry.
 
+uniform float u_Time; // Added for HW0  
+
 // These are the interpolated values out of the rasterizer, so you can't know
 // their specific values without knowing the vertices that contributed to them
 in vec4 fs_Nor;
@@ -39,6 +41,22 @@ void main()
                                                             //lit by our point light are not completely black.
 
         // Compute final shaded color
-        out_Col = vec4(diffuseColor.rgb * lightIntensity, diffuseColor.a);
-        //out_Col = vec4(1,1,1,1);
+        //out_Col = vec4(diffuseColor.rgb * lightIntensity, diffuseColor.a);   
+
+    
+    // color pallette to use
+    vec3 a = vec3(0.3, 0.5, 0.5);
+    vec3 b = vec3(0.5, 0.2, 0.5);
+    vec3 c = vec3(1.0, 1.0, 0.0);
+    vec3 d = vec3(0.00, 0.33, 0.67);
+
+    float t = dot(normalize(fs_Nor), normalize(fs_LightVec));
+    //float temp = abs(cos(u_Time * 0.0006f));
+    float offset = 0.5f * cos(u_Time * 0.45f) + 0.5f;
+    //vec3 colorTemp1 = mix(a, c, offset);
+
+    vec3 colorTemp2 = (a + c) * cos((b * t + d) *(u_Time) * 0.006f);      
+
+    out_Col = vec4(colorTemp2 * lightIntensity, 1.0);  
+        
 }
